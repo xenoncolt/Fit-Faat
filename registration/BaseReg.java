@@ -63,7 +63,7 @@ public class BaseReg implements IRegistration {
         frame.add(password);
 
         JCheckBox show_password = new JCheckBox();
-        show_password.setBounds(860, 355, 20, 28);
+        show_password.setBounds(860, y, 20, 28);
         show_password.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent value) {
                 if (show_password.isSelected()) {
@@ -83,7 +83,7 @@ public class BaseReg implements IRegistration {
         frame.add(re_password);
 
         JCheckBox show_re_password = new JCheckBox();
-        show_re_password.setBounds(860, 395, 20, 28);
+        show_re_password.setBounds(860, y, 20, 28);
         show_re_password.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent value) {
                 if (show_re_password.isSelected()) {
