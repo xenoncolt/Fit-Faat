@@ -23,8 +23,6 @@ public class Users extends BaseReg {
     JRadioButton male;
     JRadioButton female;
     ButtonGroup gender_group;
-    JPasswordField password;
-    JPasswordField re_password;
 
     String month[] = {
             "January",
@@ -42,6 +40,8 @@ public class Users extends BaseReg {
     };
     String day_30[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17",
             "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" };
+
+    boolean is_success = false;
 
     public Users() {
         // Font bold_font = new Font("Arial", Font.BOLD, 20);
@@ -254,7 +254,7 @@ public class Users extends BaseReg {
             public void actionPerformed(ActionEvent value) {
                 frame.dispose();
                 // new Login();
-                new Doctor();
+                // new Doctor();
             }
         
         });
@@ -267,6 +267,12 @@ public class Users extends BaseReg {
         register_button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent value) {
                 saveUser();
+                if (is_success) {
+                    JOptionPane.showMessageDialog(frame, "Registration Successful! \nNow Let us know about know by answering \nsome question.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    frame.dispose();
+                    
+                }
+
             }
         });
     }
@@ -333,7 +339,7 @@ public class Users extends BaseReg {
 
         if (full_name.isEmpty() || username.isEmpty() || email.isEmpty() || phone_number.isEmpty() || weight.isEmpty() || height.isEmpty() || month.isEmpty() || day.isEmpty() ||
         year.isEmpty() || pass.isEmpty() || re_pass.isEmpty()) {
-            JOptionPane.showMessageDialog(frame, "Please fill all the fields", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Please fill all the fields", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -390,6 +396,8 @@ public class Users extends BaseReg {
                 out.println("Type: patient");
                 out.println("=====================================");
             }
+
+            is_success = true;
 
 
         } catch (Exception e) {
