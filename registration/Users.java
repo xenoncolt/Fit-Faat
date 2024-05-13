@@ -12,7 +12,13 @@ import java.io.*;
 
 import java.time.*;
 
+
+
 public class Users extends BaseReg {
+
+    public static String username;
+
+
     JButton back_button;
     JButton register_button;
     JSpinner weight_field;
@@ -253,8 +259,7 @@ public class Users extends BaseReg {
         back_button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent value) {
                 frame.dispose();
-                // new Login();
-                // new Doctor();
+                new core.connect(); // move to core folder
             }
         
         });
@@ -270,7 +275,7 @@ public class Users extends BaseReg {
                 if (is_success) {
                     JOptionPane.showMessageDialog(frame, "Registration Successful! \nNow Let us know about you by answering \nsome questions.", "Success", JOptionPane.INFORMATION_MESSAGE);
                     frame.dispose();
-                    new users.Sleep();
+                    new users.qna.Sleep();
                 }
 
             }
@@ -325,7 +330,7 @@ public class Users extends BaseReg {
 
     private void saveUser() {
         String full_name = full_name_field.getText();
-        String username = username_field.getText();
+        username = username_field.getText();
         String email = email_field.getText();
         String phone_number = phn_field.getText();
         String weight = weight_field.getValue().toString();
@@ -372,7 +377,39 @@ public class Users extends BaseReg {
                 file.createNewFile();
             }
 
+            File file2 = new File("./database/Doctors.txt");
+            if (!file2.exists()) {
+                file2.getParentFile().mkdirs();
+                file2.createNewFile();
+            }
+
+            File file3 = new File("./database/Admins.txt");
+            if (!file3.exists()) {
+                file3.getParentFile().mkdirs();
+                file3.createNewFile();
+            }
+
             try(BufferedReader read = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = read.readLine()) != null) {
+                    if (line.contains("Username: " + username) || line.contains("Email: " + email)) {
+                        JOptionPane.showMessageDialog(frame, "Username or email already exists. \nPlease use different username or email.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+            }
+
+            try(BufferedReader read = new BufferedReader(new FileReader(file2))) {
+                String line;
+                while ((line = read.readLine()) != null) {
+                    if (line.contains("Username: " + username) || line.contains("Email: " + email)) {
+                        JOptionPane.showMessageDialog(frame, "Username or email already exists. \nPlease use different username or email.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+            }
+
+            try(BufferedReader read = new BufferedReader(new FileReader(file3))) {
                 String line;
                 while ((line = read.readLine()) != null) {
                     if (line.contains("Username: " + username) || line.contains("Email: " + email)) {

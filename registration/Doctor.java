@@ -88,7 +88,7 @@ public class Doctor extends BaseReg {
         frame.add(backButton);
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent value) {
-                new Users();
+                new core.connect();
                 frame.dispose();
             }
         });
@@ -144,13 +144,45 @@ public class Doctor extends BaseReg {
         }
 
         try {
-            File file = new File("./database/Users.txt");
+            File file = new File("./database/Doctors.txt");
             if (!file.exists()) {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
             }
 
+            File file2 = new File("./database/Users.txt");
+            if (!file2.exists()) {
+                file2.getParentFile().mkdirs();
+                file2.createNewFile();
+            }
+
+            File file3 = new File("./database/Admins.txt");
+            if (!file3.exists()) {
+                file3.getParentFile().mkdirs();
+                file3.createNewFile();
+            }
+
             try(BufferedReader read = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = read.readLine()) != null) {
+                    if (line.contains("Username: " + username) || line.contains("Email: " + email)) {
+                        JOptionPane.showMessageDialog(frame, "Username or email already exists. \nPlease use different username or email.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+            }
+
+            try(BufferedReader read = new BufferedReader(new FileReader(file2))) {
+                String line;
+                while ((line = read.readLine()) != null) {
+                    if (line.contains("Username: " + username) || line.contains("Email: " + email)) {
+                        JOptionPane.showMessageDialog(frame, "Username or email already exists. \nPlease use different username or email.", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+            }
+
+            try(BufferedReader read = new BufferedReader(new FileReader(file3))) {
                 String line;
                 while ((line = read.readLine()) != null) {
                     if (line.contains("Username: " + username) || line.contains("Email: " + email)) {
@@ -170,7 +202,6 @@ public class Doctor extends BaseReg {
                 out.println("College: " + college_name);
                 out.println("Graduation Year: " + graduation_year);
                 out.println("Password: " + pass);
-                out.println("Type: doctor");
                 out.println("=====================================");
             }
 

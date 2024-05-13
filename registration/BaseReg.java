@@ -69,7 +69,7 @@ public class BaseReg implements IRegistration {
                 if (show_password.isSelected()) {
                     password.setEchoChar((char) 0);
                 } else {
-                    password.setEchoChar('*');
+                    password.setEchoChar('•');
                 }
             }
         });
@@ -89,7 +89,7 @@ public class BaseReg implements IRegistration {
                 if (show_re_password.isSelected()) {
                     re_password.setEchoChar((char) 0);
                 } else {
-                    re_password.setEchoChar('*');
+                    re_password.setEchoChar('•');
                 }
             }
         });
