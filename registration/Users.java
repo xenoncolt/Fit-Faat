@@ -268,9 +268,9 @@ public class Users extends BaseReg {
             public void actionPerformed(ActionEvent value) {
                 saveUser();
                 if (is_success) {
-                    JOptionPane.showMessageDialog(frame, "Registration Successful! \nNow Let us know about know by answering \nsome question.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Registration Successful! \nNow Let us know about you by answering \nsome questions.", "Success", JOptionPane.INFORMATION_MESSAGE);
                     frame.dispose();
-                    
+                    new users.Sleep();
                 }
 
             }
