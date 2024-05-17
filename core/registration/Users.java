@@ -16,7 +16,7 @@ import java.time.*;
 
 public class Users extends BaseReg {
 
-    public static String username;
+    private String username;
 
 
     JButton back_button;
@@ -435,6 +435,7 @@ public class Users extends BaseReg {
             }
 
             is_success = true;
+            core.LoginInfo.setUsername(username);
 
 
         } catch (Exception e) {

@@ -127,15 +127,14 @@ public class Login implements ActionListener {
         } else {
           try {
             username = getUsernameFromEmail("./database/Users.txt", email_username);
+            core.LoginInfo.setUsername(username);
             if (username == null) {
               username = getUsernameFromEmail("./database/Doctors.txt", email_username);
               core.LoginInfo.setUsername(username);
-
-            }
+            } 
             if (username == null) {
               username = getUsernameFromEmail("./database/Admins.txt", email_username);
               core.LoginInfo.setUsername(username);
-
             }
 
           } catch (IOException e) {
@@ -159,11 +158,11 @@ public class Login implements ActionListener {
         } else {
           try {
             username = getUsernameFromEmail("./database/Users.txt", email_username);
+            core.LoginInfo.setUsername(username);
             if (username == null) {
               username = getUsernameFromEmail("./database/Doctors.txt", email_username);
               core.LoginInfo.setUsername(username);
-
-            }
+            } 
             if (username == null) {
               username = getUsernameFromEmail("./database/Admins.txt", email_username);
               core.LoginInfo.setUsername(username);
@@ -192,11 +191,12 @@ public class Login implements ActionListener {
         } else {
           try {
             username = getUsernameFromEmail("./database/Users.txt", email_username);
+            core.LoginInfo.setUsername(username);
             if (username == null) {
               username = getUsernameFromEmail("./database/Doctors.txt", email_username);
               core.LoginInfo.setUsername(username);
 
-            }
+            } 
             if (username == null) {
               username = getUsernameFromEmail("./database/Admins.txt", email_username);
               core.LoginInfo.setUsername(username);
@@ -297,14 +297,20 @@ public class Login implements ActionListener {
 
   // email diya username ber korar jnow
   private String getUsernameFromEmail(String filePath, String email) throws IOException {
-    List<String> lines = Files.readAllLines(Paths.get(filePath));
-    for (int i = 0; i < lines.size(); i++) {
-      if (lines.get(i).contains("Email: " + email)) {
-        // Username email er ager line a ase
-        return lines.get(i - 1).substring("Username: ".length());
+    try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+      String line;
+      String previousLine = null;
+      while ((line = reader.readLine()) != null) {
+          if (line.contains("Email: " + email)) {
+              // Username is on the previous line
+              if (previousLine != null && previousLine.startsWith("Username: ")) {
+                  return previousLine.substring("Username: ".length());
+              }
+          }
+          previousLine = line;
       }
-    }
-    return null;
+  }
+  return null;
   }
 
   public void actionPerformed(ActionEvent e) {
@@ -326,7 +332,7 @@ public class Login implements ActionListener {
 
     if ((e.getSource()).equals(admin)) {
       frame.setVisible(false);
-      new core.LoginStuff.Admin(); // move to admin folder
+      new admin.Admin(); // move to admin folder
     }
 
   }

@@ -205,6 +205,8 @@ public class Doctor extends BaseReg {
                 out.println("=====================================");
             }
 
+            core.LoginInfo.setUsername(username);
+
 
         } catch (Exception e) {
             e.printStackTrace();
