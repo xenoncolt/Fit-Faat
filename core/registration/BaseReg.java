@@ -1,4 +1,4 @@
-package registration;
+package core.registration;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +24,7 @@ public class BaseReg implements IRegistration {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
     }
 
     public void addLabel(String text, int x, int y, int width, int height, Font font) {

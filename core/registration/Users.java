@@ -1,4 +1,4 @@
-package registration;
+package core.registration;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -259,7 +259,7 @@ public class Users extends BaseReg {
         back_button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent value) {
                 frame.dispose();
-                new core.connect(); // move to core folder
+                new core.LoginStuff.connect(); // move to core folder
             }
         
         });

@@ -1,4 +1,4 @@
-package registration;
+package core.registration;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -88,7 +88,7 @@ public class Doctor extends BaseReg {
         frame.add(backButton);
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent value) {
-                new core.connect();
+                new core.LoginStuff.connect();
                 frame.dispose();
             }
         });

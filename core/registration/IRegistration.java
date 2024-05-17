@@ -1,4 +1,4 @@
-package registration;
+package core.registration;
 
 import java.awt.*;
 
