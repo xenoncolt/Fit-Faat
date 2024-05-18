@@ -2,9 +2,12 @@ package users;
 
 import java.io.*;
 import java.awt.event.*;
+
+import java.util.*;
+import java.util.List;
 import java.awt.*;
 import javax.swing.*;
-import java.util.*;
+
 
 public class Dashboard {
     JFrame frame;
@@ -74,6 +77,13 @@ public class Dashboard {
         search_doc.setForeground(Color.WHITE);
         side_panel.add(search_doc);
 
+        search_doc.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent happen) {
+                searchDoctor();
+            }
+        
+        });
+
         // JButton book_appointment = new JButton();
         // book_appointment.setText("Book Appointment");
         // book_appointment.setBounds(25, 180, 150, 50);
@@ -87,6 +97,12 @@ public class Dashboard {
         view_appointment.setBackground(new Color(135, 206, 235));
         view_appointment.setForeground(Color.WHITE);
         side_panel.add(view_appointment);
+
+        view_appointment.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent happen) {
+                viewAppointment();
+            }
+        });
 
         // JButton view_prescription = new JButton();
         // view_prescription.setText("View Prescription");
@@ -139,6 +155,144 @@ public class Dashboard {
                 e.printStackTrace();
             }
             return null;
+    }
+
+    public void viewAppointment() {
+        editable_area.removeAll();
+        editable_area.repaint();
+        editable_area.revalidate();
+
+        JLabel appointment = new JLabel("Appointment");
+        appointment.setBounds(50, 50, 200, 20);
+        appointment.setForeground(Color.WHITE);
+        appointment.setFont(new Font("Arial", Font.BOLD, 20));
+        editable_area.add(appointment);
+
+        String username = core.LoginInfo.getUsername();
+        String file_path = "./database/Appointments.txt";
+        String[] appointment_data = getAppointmentData(file_path, username);
+
+        if (appointment_data != null) {
+            JLabel doctor_name = new JLabel("Doctor Name: " + appointment_data[2]);
+            doctor_name.setBounds(50, 100, 200, 20);
+            doctor_name.setForeground(Color.WHITE);
+            editable_area.add(doctor_name);
+
+            JLabel doctor_email = new JLabel("Doctor Email: " + appointment_data[4]);
+            doctor_email.setBounds(50, 150, 400, 20);
+            doctor_email.setForeground(Color.WHITE);
+            editable_area.add(doctor_email);
+
+            JLabel doctor_phn = new JLabel("Doctor Phone: " + appointment_data[5]);
+            doctor_phn.setBounds(50, 200, 200, 20);
+            doctor_phn.setForeground(Color.WHITE);
+            editable_area.add(doctor_phn);
+
+            JLabel speciality = new JLabel("Specialization: " + appointment_data[6]);
+            speciality.setBounds(50, 250, 200, 20);
+            speciality.setForeground(Color.WHITE);
+            editable_area.add(speciality);
+
+            JLabel date = new JLabel("Date: " + appointment_data[7]);
+            date.setBounds(50, 300, 200, 20);
+            date.setForeground(Color.WHITE);
+            editable_area.add(date);
+
+            JLabel time = new JLabel("Time: " + appointment_data[8]);
+            time.setBounds(50, 350, 200, 20);
+            time.setForeground(Color.WHITE);
+            editable_area.add(time);
+
+            JLabel is_approved = new JLabel("Is Approved: " + appointment_data[9]);
+            is_approved.setBounds(50, 400, 200, 20);
+            is_approved.setForeground(Color.WHITE);
+            editable_area.add(is_approved);
+
+            JButton cancel_appointment = new JButton("Cancel Appointment");
+            cancel_appointment.setBounds(50, 450, 200, 30);
+            cancel_appointment.setBackground(new Color(135, 206, 235));
+            cancel_appointment.setForeground(Color.WHITE);
+            editable_area.add(cancel_appointment);
+
+            cancel_appointment.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent happen) {
+                    cancelAppointment(file_path, username);
+                }
+            });
+
+        } else {
+            JLabel no_result = new JLabel("No appointment found.");
+            no_result.setBounds(50, 100, 200, 20);
+            no_result.setForeground(Color.WHITE);
+            editable_area.add(no_result);
+        }
+    }
+
+    public void cancelAppointment(String file_path, String username) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file_path))) {
+            StringBuilder content = new StringBuilder();
+            String line;
+            boolean found = false;
+            boolean approved = false;
+
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("Username: " + username)) {
+                    found = true;
+                    StringBuilder user_block = new StringBuilder();
+                    user_block.append(line).append(System.lineSeparator());
+                    for (int i = 0; i < 11; i++) { // Assuming there are 11 more lines in the user block
+                        line = reader.readLine();
+                        if (line == null) {
+                            break;
+                        }
+                        user_block.append(line).append(System.lineSeparator());
+                        if (line.contains("Is Approved: true")) {
+                            approved = true;
+                        }
+                    }
+                    if (!approved) {
+                        found = true;
+                    } else {
+                        content.append(user_block);
+                    }
+                } else {
+                    content.append(line).append(System.lineSeparator());
+                }
+            }
+
+            if (found && !approved) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file_path))) {
+                    writer.write(content.toString());
+                }
+            } else if (found && approved) {
+                JOptionPane.showMessageDialog(frame, "Appointment is already approved and cannot be canceled.", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(frame, "Appointment not found.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String[] getAppointmentData(String path, String username) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("Username: " + username)) {
+                    String[] Data = new String[12];
+                    for (int i = 0; i < 12; i++) {
+                        line = reader.readLine();
+                        if (line != null && line.contains(": ")) {
+                            Data[i] = line.split(": ")[1];
+                        }
+                    }
+                    return Data;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void profile() {
@@ -471,5 +625,248 @@ public class Dashboard {
 
         return advice.toString();
     }
+
+    public void searchDoctor() {
+        editable_area.removeAll();
+        editable_area.repaint();
+        editable_area.revalidate();
+
+        JLabel search = new JLabel("Search Doctor");
+        search.setBounds(50, 50, 200, 20);
+        search.setForeground(Color.WHITE);
+        search.setFont(new Font("Arial", Font.BOLD, 20));
+        editable_area.add(search);
+
+        JLabel speciality = new JLabel("Speciality: ");
+        speciality.setBounds(50, 100, 100, 20);
+        speciality.setForeground(Color.WHITE);
+        editable_area.add(speciality);
+
+        String[] specialities = { "Cardiologist", "Dermatologist", "Endocrinologist", "Gastroenterologist",
+        "Preventive Medicine", "Sports Medicine", "Hematologist", "Nephrologist", "Neurologist", "Oncologist",
+        "Nutrition and Dietetics", "Ophthalmologist", "Endocrinology", "Pediatrician", "Preventive Medicine",
+        "Psychiatrist", "Pulmonologist", "Radiologist", "Rheumatologist", "Obesity and Weight Management",
+        "Gastroenterology", "Urologist" };
+
+        JComboBox<String> speciality_list = new JComboBox<>(specialities);
+        speciality_list.setBounds(150, 100, 200, 20);
+        speciality_list.setBackground(Color.BLACK);
+        speciality_list.setForeground(Color.WHITE);
+        speciality_list.setFont(new Font("Arial", Font.PLAIN, 16));
+        editable_area.add(speciality_list);
+
+        JButton search_btn = new JButton("Search");
+        search_btn.setBounds(400, 90, 100, 30);
+        search_btn.setBackground(new Color(135, 206, 235));
+        search_btn.setForeground(Color.WHITE);
+        editable_area.add(search_btn);
+
+        search_btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent happen) {
+                String selected_speciality = (String) speciality_list.getSelectedItem();
+                searchResult(selected_speciality);
+            }
+        });
+
+        JButton back = new JButton("Back");
+        back.setBounds(50, 500, 100, 30);
+        back.setBackground(new Color(135, 206, 235));
+        back.setForeground(Color.WHITE);
+        editable_area.add(back);
+
+        back.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent happen) {
+                editable_area.removeAll();
+                editable_area.repaint();
+                editable_area.revalidate();
+
+                healthSuggestion();
+            }
+        });
+    }
+
+    public void searchResult(String speciality) {
+        editable_area.removeAll();
+        editable_area.repaint();
+        editable_area.revalidate();
+
+        JLabel search = new JLabel("Search Result");
+        search.setBounds(50, 50, 200, 20);
+        search.setForeground(Color.WHITE);
+        search.setFont(new Font("Arial", Font.BOLD, 20));
+        editable_area.add(search);
+
+        String file_path = "./database/Doctors.txt";
+        String[] doctor_data = getDoctorData(file_path, speciality);
+        
+        if (doctor_data != null) {
+            JLabel name = new JLabel("Name: " + doctor_data[0]);
+            name.setBounds(50, 100, 200, 20);
+            name.setForeground(Color.WHITE);
+            editable_area.add(name);
+
+            JLabel email = new JLabel("Email: " + doctor_data[2]);
+            email.setBounds(50, 150, 200, 20);
+            email.setForeground(Color.WHITE);
+            editable_area.add(email);
+
+            JLabel phn = new JLabel("Phone: " + doctor_data[3]);
+            phn.setBounds(50, 200, 200, 20);
+            phn.setForeground(Color.WHITE);
+            editable_area.add(phn);
+
+            JLabel speciality_label = new JLabel("Specialization: " + speciality);
+            speciality_label.setBounds(50, 250, 200, 20);
+            speciality_label.setForeground(Color.WHITE);
+            editable_area.add(speciality_label);
+
+
+
+            JButton book_appointment = new JButton("Book Appointment");
+            book_appointment.setBounds(50, 300, 200, 30);
+            book_appointment.setBackground(new Color(135, 206, 235));
+            book_appointment.setForeground(Color.WHITE);
+            editable_area.add(book_appointment);
+
+            book_appointment.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent happen) {
+                    bookAppointment(doctor_data, speciality);
+                }
+            });
+
+            JButton back = new JButton("Back");
+            back.setBounds(10, 550, 100, 30);
+            back.setBackground(new Color(135, 206, 235));
+            back.setForeground(Color.WHITE);
+            editable_area.add(back);
+
+            back.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent happen) {
+                    searchDoctor();
+                }
+            });
+
+        } else {
+            JLabel no_result = new JLabel("No doctor found for this speciality.");
+            no_result.setBounds(50, 100, 300, 20);
+            no_result.setForeground(Color.WHITE);
+            editable_area.add(no_result);
+        }
+    }
+
+    public void bookAppointment(String[] doctor_data, String specialties) {
+        editable_area.removeAll();
+        editable_area.repaint();
+        editable_area.revalidate();
+
+        JLabel book = new JLabel("Book Appointment");
+        book.setBounds(50, 50, 200, 20);
+        book.setForeground(Color.WHITE);
+        book.setFont(new Font("Arial", Font.BOLD, 20));
+        editable_area.add(book);
+
+        JLabel name = new JLabel("Doctor Name: " + doctor_data[0]);
+        name.setBounds(50, 100, 200, 20);
+        name.setForeground(Color.WHITE);
+        editable_area.add(name);
+
+        JLabel email = new JLabel("Doctor Email: " + doctor_data[2]);
+        email.setBounds(50, 150, 400, 20);
+        email.setForeground(Color.WHITE);
+        editable_area.add(email);
+
+        JLabel phn = new JLabel("Doctor Phone: " + doctor_data[3]);
+        phn.setBounds(50, 200, 200, 20);
+        phn.setForeground(Color.WHITE);
+        editable_area.add(phn);
+
+        JLabel speciality = new JLabel("Specialization: " + specialties);
+        speciality.setBounds(50, 250, 200, 20);
+        speciality.setForeground(Color.WHITE);
+        editable_area.add(speciality);
+
+
+        JLabel date = new JLabel("Date: ");
+        date.setBounds(50, 300, 100, 20);
+        date.setForeground(Color.WHITE);
+        editable_area.add(date);
+
+        JTextField date_field = new JTextField();
+        date_field.setBounds(150, 300, 200, 20);
+        editable_area.add(date_field);
+
+        JLabel time = new JLabel("Time: ");
+        time.setBounds(50, 350, 100, 20);
+        time.setForeground(Color.WHITE);
+        editable_area.add(time);
+
+        JTextField time_field = new JTextField();
+        time_field.setBounds(150, 350, 200, 20);
+        editable_area.add(time_field);
+
+        JButton book_btn = new JButton("Book");
+        book_btn.setBounds(50, 400, 100, 30);
+        book_btn.setBackground(new Color(135, 206, 235));
+        book_btn.setForeground(Color.WHITE);
+        editable_area.add(book_btn);
+
+        book_btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent happen) {
+                String username = core.LoginInfo.getUsername();
+                String file_path = "./database/Appointments.txt";
+                String[] user_data = getUserData("./database/Users.txt", username);
+                String[] doctor_data = getDoctorData("./database/Doctors.txt", specialties);
+                String appointment = "Patient Username: " + username + "\nPatient Email: " + user_data[0] + "\nPatient Phone: " + user_data[1] + "\nDoctor Name: " + doctor_data[0] + "\nDoctor Username: " + doctor_data[0] + "\nDoctor Email: " + doctor_data[2] + "\nDoctor Phone: " + doctor_data[3] + "\nSpecialization: " + specialties + "\nDate: " + date_field.getText() + "\nTime: " + time_field.getText() + "\nIsApproved: " + false;
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file_path, true)) ) {
+                    writer.write(appointment + "\n=====================================");
+                    JOptionPane.showMessageDialog(frame, "Appointment booked successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        JButton back = new JButton("Back");
+        back.setBounds(200, 550, 100, 30);
+        back.setBackground(new Color(135, 206, 235));
+        back.setForeground(Color.WHITE);
+        editable_area.add(back);
+
+        back.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent happen) {
+                searchResult(doctor_data[3]);
+            }
+        });
+
+    }
+
+    private String[] getDoctorData(String path, String speciality) {
+    try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+        String line;
+        List<String> data = new ArrayList<>();
+        boolean found = false;
+        while ((line = reader.readLine()) != null) {
+            if (found) {
+                if (line.equals("=====================================")) {
+                    break;
+                } else {
+                    String[] parts = line.split(": ");
+                    if (parts.length > 1) {
+                        data.add(parts[1]);
+                    } else {
+                        System.err.println("Invalid line format: " + line);
+                        return null;
+                    }
+                }
+            } else if (line.contains("Specialization: " + speciality)) {
+                found = true;
+            }
+        }
+        return found ? data.toArray(new String[0]) : null;
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
 
 }
