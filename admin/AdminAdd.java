@@ -250,10 +250,7 @@ c.add(pass);
                         BufferedWriter bw = new BufferedWriter(fw);
                         PrintWriter pw = new PrintWriter(bw);
 
-                       // LocalDateTime myDateObj = LocalDateTime.now();
-                       // DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm a, dd/MM/yyyy");
-
-                 //       String timeAndDate = myDateObj.format(myFormatObj);
+                  
 
                         pw.println("Specialization: " + textField5);
                         pw.println("Name: " + textField1);
