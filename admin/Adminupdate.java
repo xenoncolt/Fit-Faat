@@ -185,7 +185,7 @@ public class Adminupdate {
 
         try {
             FileWriter writer = new FileWriter("./database/Admins.txt", true);
-            writer.write(newUser.getUsername() + "," + newUser.getPass() + "\n");
+            writer.write(newUser.getUsername() + "," + newUser.getEmail() + "," + newUser.getPass() + "\n");
             writer.close();
             JOptionPane.showMessageDialog(frame, "Registration Successful!");
             frame.dispose();
