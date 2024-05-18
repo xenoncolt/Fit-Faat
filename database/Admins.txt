@@ -1,5 +1,1 @@
-Name: Xenon Colt
-Username: xenoncolt
-Email: xenoncolt@gmail.com
-Password: sad
-=====================================
+a,mahin@gmail.com,aadmin,admin

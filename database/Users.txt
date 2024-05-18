@@ -13,3 +13,33 @@ Sleep: 6-8
 Wakeup: 30
 Feel: low
 =====================================
+Name: awda
+Username: awdada
+Email: awdaw@gmail.com
+Phone: +8801793481919
+Birth: 24.June.2003
+Age: 20
+Weight: 53
+Height: 153
+Sex: Male
+Password: sad
+Type: patient
+Sleep: 6-8
+Wakeup: 10
+Feel: medium
+=====================================
+Name: sad
+Username: sad
+Email: sad@gmail.com
+Phone: +8801728123411
+Birth: 1.January.2000
+Age: 24
+Weight: 50
+Height: 150
+Sex: Male
+Password: sad
+Type: patient
+Sleep: 6-
+Wakeup: 20
+Feel: medium
+=====================================
