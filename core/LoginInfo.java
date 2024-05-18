@@ -7,7 +7,7 @@ public class LoginInfo {
 
     public static void setUsername (String name) {
         // System.out.println("set successfully");
-        System.out.println(name);
+        // System.out.println(name);
         username = name;
     }
 

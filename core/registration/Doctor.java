@@ -193,11 +193,11 @@ public class Doctor extends BaseReg {
             }
 
             try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file, true)))) {
+                out.println("Specialization: " + better_sub);
                 out.println("Name: " + full_name);
                 out.println("Username: " + username);
                 out.println("Email: " + email);
                 out.println("Phone: " + phone_number);
-                out.println("Specialization: " + better_sub);
                 out.println("License: " + license_number);
                 out.println("College: " + college_name);
                 out.println("Graduation Year: " + graduation_year);

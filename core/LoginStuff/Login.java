@@ -176,8 +176,8 @@ public class Login implements ActionListener {
           }
         }
         JOptionPane.showMessageDialog(frame, "Login successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
-        // new doctor.Dashboard();
-        System.out.println("new doctor.Dashboard();"); // need to change later
+        new doctor.Dashboard();
+        // System.out.println("new doctor.Dashboard();"); // need to change later
         frame.dispose();
         return;
       }

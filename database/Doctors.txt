@@ -8,3 +8,23 @@ College: Dhaka College
 Graduation Year: 2013
 Password: sad
 =====================================
+Specialization: Gastroenterologist
+Name: asd
+Username: asd
+Email: asd@a.com
+Phone: +8801793481919
+License: 12353
+College: Nije e jani na
+Graduation Year: 2024
+Password: sad
+=====================================
+Specialization: Ophthalmologist
+Name: wad
+Username: wad
+Email: wad@gmail.com
+Phone: +8801790481919
+License: 12345
+College: College nai
+Graduation Year: 2023
+Password: sad
+=====================================
