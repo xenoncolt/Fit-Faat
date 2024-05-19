@@ -246,7 +246,7 @@ public class Dashboard {
                             break;
                         }
                         user_block.append(line).append(System.lineSeparator());
-                        if (line.contains("Is Approved: true")) {
+                        if (line.contains("IsApproved: true")) {
                             approved = true;
                         }
                     }
@@ -816,7 +816,7 @@ public class Dashboard {
                 String file_path = "./database/Appointments.txt";
                 String[] user_data = getUserData("./database/Users.txt", username);
                 String[] doctor_data = getDoctorData("./database/Doctors.txt", specialties);
-                String appointment = "Patient Username: " + username + "\nPatient Email: " + user_data[0] + "\nPatient Phone: " + user_data[1] + "\nDoctor Name: " + doctor_data[0] + "\nDoctor Username: " + doctor_data[0] + "\nDoctor Email: " + doctor_data[2] + "\nDoctor Phone: " + doctor_data[3] + "\nSpecialization: " + specialties + "\nDate: " + date_field.getText() + "\nTime: " + time_field.getText() + "\nIsApproved: " + false;
+                String appointment = "Patient Username: " + username + "\nPatient Email: " + user_data[0] + "\nPatient Phone: " + user_data[1] + "\nDoctor Name: " + doctor_data[0] + "\nDoctor Username: " + doctor_data[1] + "\nDoctor Email: " + doctor_data[2] + "\nDoctor Phone: " + doctor_data[3] + "\nSpecialization: " + specialties + "\nDate: " + date_field.getText() + "\nTime: " + time_field.getText() + "\nIsApproved: " + false;
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(file_path, true)) ) {
                     writer.write(appointment + "\n=====================================");
                     JOptionPane.showMessageDialog(frame, "Appointment booked successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);

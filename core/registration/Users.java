@@ -93,6 +93,8 @@ public class Users extends BaseReg {
         // username_field.setBounds(610, 115, 250, 28);
         // user_frame.add(username_field);
 
+        addImg(0, 0, 500, 600);
+
         // Email
         addLabel("Email:", 530, 155, 100, 28, normal_font);
         // JLabel email_label = new JLabel("Email:");

@@ -32,6 +32,8 @@ public class Doctor extends BaseReg {
 
         addUsername(610, 115, 250, 28);
 
+        addImg(-10, 0, 400, 500);
+
         addLabel("Email:", 530, 155, 100, 28, normal_font);
 
         addEmail(610, 155, 250, 28);

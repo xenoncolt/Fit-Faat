@@ -58,6 +58,13 @@ public class BaseReg implements IRegistration {
         frame.add(phn_field);
     }
 
+    public void addImg(int x, int y, int width, int height) {
+        ImageIcon img = new ImageIcon("./img/regback.png");
+        JLabel logo = new JLabel(img);
+        logo.setBounds(x, y, width, height);
+        frame.add(logo);
+    }
+
     public void addPassword(int x, int y, int width, int height) {
         password = new JPasswordField();
         password.setBounds(x, y, width, height);
